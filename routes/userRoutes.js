@@ -12,10 +12,10 @@ router.delete('/:id', userController.deleteUser)
 router.get('/:id', userController.getUser)
 
 // FOLLOW A  USER
-// router.put('/', userController.getUser)
+router.put('/:id/follow', userController.followUser)
 
 // UNFOLLOW A  USER
-// router.put('/', userController.getUser)
+router.put('/:id/unfollow', userController.unfollowUser)
 
 
 module.exports = router

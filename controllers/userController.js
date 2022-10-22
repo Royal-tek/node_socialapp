@@ -58,3 +58,47 @@ exports.getUser = async (req, res)=>{
         res.status(400).json({error})
     }
 }
+
+// FOLLOW A USER
+exports.followUser = async (req, res)=>{
+    if(req.body.userId !== req.params.id){
+        try {
+            const user = await User.findById(req.params.id)
+            const currentUser = await User.findById(req.body.userId)
+            if(!user.followers.includes(req.body.userId)){
+                await user.updateOne({ $push : {followers :currentUser._id}})
+                await currentUser.updateOne({ $push : {following : user._id}})
+            }else{
+                res.status(403).json({message : "You already follow this user"})
+            }
+            
+        } catch (error) {
+            res.status(500).json({error})
+        }
+
+    }else{
+        res.status(400).json({message : 'You cannot follow yourself'})
+    }
+}
+
+// UNFOLLOW A USER
+exports.unfollowUser = async (req, res)=>{
+    if(req.body.userId !== req.params.id){
+        try {
+            const user = await User.findById(req.params.id)
+            const currentUser = await User.findById(req.body.userId)
+            if(user.followers.includes(req.body.userId)){
+                await user.updateOne({ $pull : {followers :currentUser._id}})
+                await currentUser.updateOne({ $pull : {following : user._id}})
+            }else{
+                res.status(403).json({message : "You do not follow this user"})
+            }
+            
+        } catch (error) {
+            res.status(500).json({error})
+        }
+
+    }else{
+        res.status(400).json({message : 'You cannot unfollow yourself'})
+    }
+}
