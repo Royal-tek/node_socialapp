@@ -6,6 +6,7 @@ const dotenv = require('dotenv').config()
 const helmet = require('helmet')
 const userRoutes = require('./routes/userRoutes') 
 const authRoutes = require('./routes/authRoutes') 
+const postRoutes = require('./routes/postRoutes')
 
 // MIDDLEWARE
 app.use(express.json())
@@ -17,6 +18,7 @@ app.use(helmet())
 // BASE ROUTING
 app.use('/api/user', userRoutes)
 app.use('/api/auth', authRoutes)
+app.use('/api/post', postRoutes)
 
 
 // //CONNECTING TO THE MONGODB 
